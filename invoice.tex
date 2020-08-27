@@ -1,0 +1,78 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{titlesec} % For customizing title sections
+\usepackage{spreadtab} % For spreadsheet features
+\usepackage{tabularx} % Table that can fill width dynamically
+\usepackage{hhline} % For single-cell borders
+\usepackage{arydshln} % For the dotted line on the table
+\usepackage{enumitem} % For customizing lists
+
+\pagenumbering{gobble} % No page numbers
+\setlength{\parindent}{0em} % No paragraph indentation
+\setlength{\parskip}{1em} % Paragraph spacing
+\titlespacing*{\section}{0pt}{\parskip}{-7pt} % Reduce margin bottom from the title
+\renewcommand\familydefault{\sfdefault} % Sans-serif
+\renewcommand{\arraystretch}{1.5} % Apply vertical padding to table cells
+\setlist{nolistsep} % No padding around list items
+\setlist[itemize]{leftmargin=15pt} % Default is 25pt
+\setlist[itemize]{after=\vspace{-\baselineskip}} % Dirty hack to remove extra padding after bullet list
+\STautoround*{2} % Get spreadtab to always display the decimal part
+
+\begin{document}
+
+\small
+\textbf{$author$}
+$for(from)$
+  \textbullet{} $from$
+$endfor$
+\normalsize
+
+\vspace{1em}
+
+$for(to)$
+  $to$ \\
+$endfor$
+
+\vspace{1em}
+
+\begin{flushright}
+  \small
+  $city$, $date$
+\end{flushright}
+
+\section*{Invoice \#$invoice-nr$}
+
+\begin{spreadtab}{{tabularx}{\textwidth}[t t]{Xr}}
+  \hdashline[1pt/1pt]
+  @ \textbf{Description} & @ \textbf{Price in $currency$} \\ \hline
+  $for(service)$
+    @ $service.description$
+    $if(service.details)$
+      \scriptsize\begin{itemize}
+        $for(service.details)$
+          \item $service.details$
+        $endfor$
+      \end{itemize}
+    $endif$
+    & $service.price$ \\
+  $endfor$
+  \hline
+  $if(gst)$
+    @ \multicolumn{1}{r}{Subtotal:} & :={sum(b1:[0,-1])} \\ \hhline{~-}
+    @ \multicolumn{1}{r}{GST $gst$\%:} & $gst$/100*[0,-1] \\ \hhline{~-}
+    @ \multicolumn{1}{r}{QST $qst$\%:} & $qst$/100*[0,-2] \\ \hhline{~-}
+  $endif$
+  @ \multicolumn{1}{r}{\textbf{Total:}} & \textbf{:={$if(gst)$[0,-1]+[0,-2]+[0,-3]$else$sum(c1:[0,-1])$endif$}} \\ \hhline{~-}
+\end{spreadtab}
+
+\vspace{5em}
+
+\small
+$closingnote$
+
+\medskip
+
+$author$
+
+\end{document}
