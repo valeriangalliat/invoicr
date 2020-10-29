@@ -7,13 +7,13 @@ invoice-nr: EX-20200826
 author: Bob
 city: Montreal
 from:
-  - 29 Laurier O
+  - 29 Laurier Ave O
   - Montreal, QC
   - H2T 2N2
   - Canada
 to:
   - Alice
-  - 351 Laurier E
+  - 351 Laurier Ave E
   - Montreal, QC
   - H2T 1G7
 service:
