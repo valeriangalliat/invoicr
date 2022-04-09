@@ -25,9 +25,9 @@ On macOS:
 
 ```
 brew install pandoc
-brew cask install basictex
+brew install --cask basictex
 sudo tlmgr update --self
-sudo tlmgr install titlesec spreadtab arydshln enumitem xstring
+sudo tlmgr install titlesec spreadtab arydshln enumitem xstring calligra fundus-calligra
 sudo tlmgr paper a4
 ```
 

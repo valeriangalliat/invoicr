@@ -7,6 +7,7 @@
 \usepackage{hhline} % For single-cell borders
 \usepackage{arydshln} % For the dotted line on the table
 \usepackage{enumitem} % For customizing lists
+\usepackage{calligra} % For signature font
 
 \pagenumbering{gobble} % No page numbers
 \setlength{\parindent}{0em} % No paragraph indentation
@@ -43,9 +44,9 @@ $endfor$
 
 \section*{Invoice \#$invoice-nr$}
 
-\begin{spreadtab}{{tabularx}{\textwidth}[t t]{Xr}}
+\begin{spreadtab}{{tabularx}{\textwidth}{Xccr}}
   \hdashline[1pt/1pt]
-  @ \textbf{Description} & @ \textbf{Price in $currency$} \\ \hline
+  @ \textbf{Description} & @ \textbf{Hours} & @ \textbf{Rate} & @ \textbf{Price in $currency$} \\ \hline
   $for(service)$
     @ $service.description$
     $if(service.details)$
@@ -55,24 +56,25 @@ $endfor$
         $endfor$
       \end{itemize}
     $endif$
-    & $service.price$ \\
+    & @ $service.hours$
+    & @ $service.rate$
+    & $service.hours$*$service.rate$ \\
   $endfor$
   \hline
   $if(gst)$
-    @ \multicolumn{1}{r}{Subtotal:} & :={sum(b1:[0,-1])} \\ \hhline{~-}
-    @ \multicolumn{1}{r}{GST $gst$\%:} & $gst$/100*[0,-1] \\ \hhline{~-}
-    @ \multicolumn{1}{r}{QST $qst$\%:} & $qst$/100*[0,-2] \\ \hhline{~-}
+    @ \multicolumn{3}{r}{Subtotal:} & :={sum(d1:[0,-1])} \\ \hhline{~~~-}
+    @ \multicolumn{3}{r}{GST $gst$\%:} & $gst$/100*[0,-1] \\ \hhline{~~~-}
+    @ \multicolumn{3}{r}{QST $qst$\%:} & $qst$/100*[0,-2] \\ \hhline{~~~-}
   $endif$
-  @ \multicolumn{1}{r}{\textbf{Total:}} & \textbf{:={$if(gst)$[0,-1]+[0,-2]+[0,-3]$else$sum(c1:[0,-1])$endif$}} \\ \hhline{~-}
+  @ \multicolumn{3}{r}{\textbf{Total:}} & \textbf{:={$if(gst)$[0,-1]+[0,-2]+[0,-3]$else$sum(c1:[0,-1])$endif$}} \\ \hhline{~~~-}
 \end{spreadtab}
 
-\vspace{5em}
+\vspace{2em}
 
-\small
+\begin{small}
 $closingnote$
+\end{small}
 
-\medskip
-
-$author$
+\LARGE\calligra{$author$}
 
 \end{document}
